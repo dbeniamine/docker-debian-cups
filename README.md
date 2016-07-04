@@ -9,7 +9,7 @@ a server to support users with old version of cups.
 
 ## Run the Cups server
 ```bash
-docker run -d --privileged -v /dev/bus/usb/:/dev/bus/usb/ -v /var/run/dbus/:/var/run/dbus/ --net=host --name dbeniamine/docker-debian-cups
+docker run -d --privileged -v /dev/bus/usb/:/dev/bus/usb/ -v /var/run/dbus/:/var/run/dbus/ --net=host --name cups_1.5.3 dbeniamine/docker-debian-cups
 ```
 __Note__:
 
