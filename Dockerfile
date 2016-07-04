@@ -1,11 +1,11 @@
-FROM debian:testing
+FROM debian:oldstable
 MAINTAINER devel@olbat.net
 
 # Install Packages
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update
 # Install basic tools and cups
-RUN apt-get install -y sudo locales whois cups cups-client cups-bsd
+RUN apt-get install -y sudo locales whois cups cups-client cups-bsd apt-utils vim
 # Install all drivers
 RUN apt-get install -y printer-driver-all
 # Install HP drivers
@@ -28,14 +28,18 @@ RUN useradd \
   --password=$(mkpasswd print) \
   print
 # Disable sudo password checking for users of the sudo group
-RUN sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
+# RUN sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
 
 # Clean image
 RUN apt-get clean
 RUN rm -rf /var/lib/apt/lists/* && mkdir /var/lib/apt/lists/partial
 
+COPY cups /etc/cups
+
 # Setup environment
 WORKDIR /home/print
+
+EXPOSE 631
 
 # Default shell
 CMD ["/usr/sbin/cupsd", "-f"]
